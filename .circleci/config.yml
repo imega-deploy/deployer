@@ -8,6 +8,5 @@ jobs:
       only:
         - master
     steps:
-      - setup_remote_docker
       - run: |
           make build && make release || exit 1
