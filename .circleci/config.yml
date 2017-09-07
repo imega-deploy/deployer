@@ -8,5 +8,6 @@ jobs:
       only:
         - master
     steps:
+      - checkout
       - run: |
           make build && make release || exit 1
