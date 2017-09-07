@@ -10,4 +10,4 @@ jobs:
     steps:
       - checkout
       - run: |
-          make build && make release TAG=$(echo $CIRCLE_SHA1 | cut -c -7) || exit 1
+          make build && make release TAG=`echo $CIRCLE_SHA1 | cut -c -7` || exit 1
