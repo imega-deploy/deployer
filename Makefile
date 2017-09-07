@@ -1,4 +1,9 @@
+release:
+	@docker login --username $(DOCKER_USER) --password $(DOCKER_PASS)
+	@docker push imegadeploy/deployer:$(TAG)
+
 build: test
+	@docker build -t imegadeploy/deployer:$(TAG) .
 
 test:
 	@mkdir -p $(CURDIR)/log

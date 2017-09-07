@@ -1,0 +1,11 @@
+version: 2
+
+jobs:
+  build:
+    branches:
+      only:
+        - master
+    steps:
+      - setup_remote_docker
+      - run: |
+          make build && make release || exit 1
