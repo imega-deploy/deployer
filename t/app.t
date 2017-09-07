@@ -18,7 +18,7 @@ __DATA__
             return 400;
         }
         set_by_lua $token 'return os.getenv("TOKEN")';
-        set_by_lua $token 'return os.getenv("WEBHOOK")';
+        set_by_lua $webhook 'return os.getenv("WEBHOOK")';
         content_by_lua_file ../../src/app.lua;
     }
 --- request
