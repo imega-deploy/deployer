@@ -1,11 +1,8 @@
-FROM alpine:3.4
+FROM openresty/openresty:alpine
 
 EXPOSE 80
-
-RUN apk add --no-cache nginx-lua lua5.1-curl lua5.1-cjson && \
-    mkdir -p /tmp/nginx/client-body /app/logs /run/nginx
 
 COPY src/ /app
 COPY nginx.conf /nginx.conf
 
-CMD ["/usr/sbin/nginx", "-g", "daemon off;", "-p", "/app", "-c", "/nginx.conf"]
+CMD ["openresty", "-g", "daemon off;", "-p", "/app", "-c", "/nginx.conf"]
