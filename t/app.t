@@ -9,8 +9,18 @@ __DATA__
     env TOKEN;
     env WEBHOOK;
 --- http_config
+    lua_shared_dict token 12k;
+
     server {
         listen 127.0.0.1:80;
+        location / {
+        content_by_lua_block {
+            ngx.req.read_body()
+            local body = ngx.req.get_body_data()
+            ngx.log(ngx.ERR, body)
+        }
+        }
+
     }
 --- config
     location /t {
@@ -20,6 +30,8 @@ __DATA__
         set_by_lua $token 'return os.getenv("TOKEN")';
         set_by_lua $webhook 'return os.getenv("WEBHOOK")';
         content_by_lua_file ../../src/app.lua;
+
+
     }
 --- request
 POST /t
@@ -36,6 +48,7 @@ Token: invalidToken
     env TOKEN;
     env WEBHOOK;
 --- http_config
+    lua_shared_dict token 12k;
     server {
         listen 127.0.0.1:80;
     }
@@ -64,6 +77,7 @@ Token: mytoken
     env TOKEN;
     env WEBHOOK;
 --- http_config
+    lua_shared_dict token 12k;
     server {
         listen 127.0.0.1:80;
     }
@@ -92,6 +106,7 @@ Token: mytoken
     env TOKEN;
     env WEBHOOK;
 --- http_config
+    lua_shared_dict token 12k;
     server {
         listen 127.0.0.1:80;
     }
@@ -120,6 +135,7 @@ Token: mytoken
     env TOKEN;
     env WEBHOOK;
 --- http_config
+    lua_shared_dict token 12k;
     server {
         listen 127.0.0.1:80;
     }

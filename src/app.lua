@@ -1,9 +1,18 @@
 local json = require "cjson"
 
+local db = ngx.shared.token
+local orig_token, flags = db:get("token")
+if orig_token == nil then
+    file = io.open(ngx.var.token, "r")
+    orig_token = file:read()
+    io.close(file)
+    db:set("token", orig_token)
+end
+
 local token = ngx.req.get_headers()["token"]
 
-if token ~= ngx.var.token then
-    ngx.log(ngx.ERR, "Token is invalid")
+if token ~= orig_token then
+    ngx.log(ngx.ERR, "Token is invalid" )
     ngx.status = ngx.HTTP_UNAUTHORIZED
     ngx.exit(ngx.status)
 end
