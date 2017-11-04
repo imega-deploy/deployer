@@ -155,3 +155,32 @@ POST /t
 Token: mytoken
 --- error_log
 --- error_code: 400
+
+
+
+
+=== TEST 6: Token is valid. Payload empty. Script must returns a code of response equal 400
+--- main_config
+    env TOKEN;
+    env WEBHOOK;
+--- http_config
+    lua_shared_dict token 12k;
+    server {
+        listen 127.0.0.1:80;
+    }
+--- config
+    location /t {
+        if ($request_method != "POST") {
+            return 400;
+        }
+        set_by_lua $token 'return os.getenv("TOKEN")';
+        set_by_lua $webhook 'return os.getenv("WEBHOOK")';
+        content_by_lua_file ../../src/app.lua;
+    }
+--- request
+POST /t
+{}
+--- more_headers
+Token: mytoken
+--- error_log
+--- error_code: 400

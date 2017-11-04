@@ -34,6 +34,11 @@ if not ok then
     ngx.exit(ngx.status)
 end
 
+if data["namespace"] == nil or data["project_name"] == nil or data["tag"] == nil then
+    ngx.log(ngx.ERR, "namespace is not exists")
+    ngx.status = ngx.HTTP_BAD_REQUEST
+    ngx.exit(ngx.status)
+end
 
 local namespace, err = ngx.re.match(data.namespace, "^([a-z0-9-]+)$")
 if empty(namespace) then
