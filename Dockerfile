@@ -2,7 +2,7 @@ FROM openresty/openresty:alpine
 
 EXPOSE 80
 
-RUN mkdir -p /app/logs
+RUN apk add --no-cache make curl docker && mkdir -p /app/logs
 
 COPY src/ /app
 COPY nginx.conf /nginx.conf

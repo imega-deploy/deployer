@@ -59,7 +59,7 @@ end
 ngx.eof()
 
 os.execute("cd /tmp; git clone https://github.com/imega-deploy/main.git")
-os.execute("cd /tmp/main; make deploy-" .. namespace[1] .. "-" .. project_name[1] .. "TAG=" .. tag[1])
+os.execute("cd /tmp/main; make deploy-" .. namespace[1] .. "-" .. project_name[1] .. " TAG=" .. tag[1])
 os.execute("rm -rf /tmp/main")
 
 local webhook = ngx.var.webhook
