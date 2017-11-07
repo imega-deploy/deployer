@@ -69,5 +69,8 @@ os.execute("rm -rf /tmp/main")
 
 local webhook = ngx.var.webhook
 if not empty(webhook) then
-    os.execute("curl -X POST -d '{\"text\":\"Deploy " .. namespace[1] .. "-" .. project_name[1] .. "\"}' " .. webhook)
+    file = io.open(webhook, "r")
+    orig_webhook = file:read()
+    io.close(file)
+    os.execute("curl -X POST -d '{\"text\":\"Deploy " .. namespace[1] .. "-" .. project_name[1] .. "\"}' " .. orig_webhook)
 end
