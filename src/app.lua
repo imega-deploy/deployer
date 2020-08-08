@@ -12,7 +12,7 @@ end
 local token = ngx.req.get_headers()["token"]
 
 if token ~= orig_token then
-    ngx.log(ngx.ERR, "Token is invalid" )
+    ngx.log(ngx.ERR, "Token is invalid")
     ngx.status = ngx.HTTP_UNAUTHORIZED
     ngx.exit(ngx.status)
 end
@@ -23,9 +23,7 @@ local body = ngx.req.get_body_data()
 -- Determine whether a variable is empty
 --
 -- @return bool
-function empty(value)
-    return value == nil or value == ""
-end
+function empty(value) return value == nil or value == "" end
 
 local ok, data = pcall(json.decode, body)
 if not ok then
@@ -64,7 +62,8 @@ end
 ngx.eof()
 
 os.execute("cd /tmp; git clone https://github.com/imega-deploy/main.git")
-os.execute("cd /tmp/main; make deploy-" .. namespace[1] .. "-" .. project_name[1] .. " TAG=" .. tag[1])
+os.execute("cd /tmp/main; make deploy-" .. namespace[1] .. "-" ..
+               project_name[1] .. " TAG=" .. tag[1])
 os.execute("rm -rf /tmp/main")
 
 local webhook = ngx.var.webhook
@@ -72,5 +71,6 @@ if not empty(webhook) then
     file = io.open(webhook, "r")
     orig_webhook = file:read()
     io.close(file)
-    os.execute("curl -X POST -d '{\"text\":\"Deploy " .. namespace[1] .. "-" .. project_name[1] .. "\"}' " .. orig_webhook)
+    os.execute("curl -X POST -d '{\"text\":\"Deploy " .. namespace[1] .. "-" ..
+                   project_name[1] .. ":" .. tag[1] .. "\"}' " .. orig_webhook)
 end
